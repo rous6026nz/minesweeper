@@ -1,28 +1,41 @@
-document.addEventListener('DOMContentLoaded', startGame)
+document.addEventListener('DOMContentLoaded', startGame);
 
-// Define your `board` object here!
 var board = {
-  cells: [
-    {row: 0, col: 0, isMine: false, hidden: true},
-    {row: 0, col: 1, isMine: false, hidden: true},
-    {row: 0, col: 2, isMine: true, hidden: true},
-    {row: 0, col: 3, isMine: false, hidden: true},
-    {row: 1, col: 0, isMine: false, hidden: true},
-    {row: 1, col: 1, isMine: true, hidden: true},
-    {row: 1, col: 2, isMine: false, hidden: true},
-    {row: 1, col: 3, isMine: false, hidden: true},
-    {row: 2, col: 0, isMine: true, hidden: true},
-    {row: 2, col: 1, isMine: false, hidden: true},
-    {row: 2, col: 2, isMine: true, hidden: true},
-    {row: 2, col: 3, isMine: false, hidden: true},
-    {row: 3, col: 0, isMine: true, hidden: true},
-    {row: 3, col: 1, isMine: false, hidden: true},
-    {row: 3, col: 2, isMine: false, hidden: true},
-    {row: 3, col: 3, isMine: true, hidden: true}
-  ]
+  cells: []
 };
 
-function startGame () {
+
+// Build game board.
+// INPUT: Takes a number.
+// OUTPUT: Builds the game board.
+function buildBoard(n) {
+  // Create the game board.
+  for(let r = 0; r <= n; r ++) {
+    for(let c = 0; c <= n; c ++) {
+      // Build the cell.
+      buildCell(r, c);
+    }
+  }
+}
+
+// Build the game board cells.
+// INPUT: NULL.
+// OUTPUT: Object.
+function buildCell(r, c) {
+  let obj = {
+    row: r,
+    col: c,
+    isMine: Math.floor(Math.random() * Math.floor(2)),
+    isMarked: false,
+    hidden: true
+  };
+  return board.cells.push(obj);
+}
+
+
+function startGame() {
+
+  buildBoard(3);
 
   // Loop through board cells objects.
   for(let i = 0; i < board.cells.length; i ++) {
