@@ -61,6 +61,12 @@ function startGame() {
     board.cells[i].surroundingMines = countSurroundingMines(board.cells[i]);
   }
 
+  // Clear DOM for reset.
+  document.querySelector('.board').innerHTML = "";
+
+  // Remove the reset button.
+  document.getElementById("resetBtn").style.display = "none";
+
   // Don't remove this function call: it makes the game work!
   lib.initBoard()
 
@@ -91,36 +97,89 @@ function checkForWin () {
 
 // Check game board status.
 // INPUT: Number.
-// OUTPUT: Boolean.
+// OUTPUT: NULL.
 ////////////////////////////////////////////////////////
 function checkBoardStatus(n) {
-  // Check to determine a win:
-    // - current cell is a mine.
-    // - current cell is marked.
-    // OR
-    // - current cell is not a mine.
-    // - current cell is not hidden.
-  if(board.cells[n].isMine === 1 | board.cells[n].isMine === true && board.cells[n].isMarked !== true) {
-    // Player has not uncovered all the game cells or has not marked all the mine cells.
-    return;
+  // Checks to determine a win:
+  // All mines are marked.
+  // All non-mine cells are not hidden.
 
-  } else if(board.cells[n].hidden === false && board.cells[n].isMine === 0) {
-    // Check if all mines are marked.
-    if(board.cells[n].isMine === 1 && board.cells[n].isMarked === true) {
-      // Player has identified and marked all the mines and completed the game.
+  let b = document.getElementsByClassName('board')[0];
+  let cells = b.childNodes;
+  let cellsFoundArr = [];
+  let notMine = 0;
+  let cellsFound = false;
 
-      // You can use this function call to declare a winner (once you've
-      // detected that they've won, that is!)
-      lib.displayMessage('You win!');
+  let mineArr = document.querySelectorAll('.mine');
+  let isMarked = false;
+  let markCount = 0;
 
-      // Reset board.
-      board.cells = [];
+  // Loop through all cells.
+  cells.forEach(function(val) {
 
-      // Add eventListener and show reset button.
-      document.getElementById("resetBtn").addEventListener('click', startGame);
-      document.getElementById("resetBtn").style.display = "block";
+    // Get all mines
+    if(val.classList.contains("mine")) {
+      
+      // Check if mines are marked. 
+      if(val.classList.contains("marked")) markCount ++;
+      
+    } else {
+
+      // Increament the none mine count.
+      notMine ++;
+
+      // Check if cells have been found.
+      if(val.classList.contains('hidden')) {
+
+      // Cell remains to be found.
+
+      } else {
+
+        // Cell has been found.
+        // Add to cellsFoundArr.
+        cellsFoundArr.push(val);
+
+      }
+
     }
-  } 
+  });
+
+  console.log("Number of non-mines: " + notMine + "\n Number of found cells: " + cellsFoundArr.length);
+
+
+  
+  // Check if all mines are marked.
+  // mineArr.forEach(function(val) {
+  //   if(val.classList.contains("marked")) markCount ++;
+  // })
+
+  // Check if all mines have been marked.
+  if(markCount === mineArr.length) isMarked = true;
+
+  // Check if all cells that are not mines is equal to notMine.
+  if(notMine === cellsFoundArr.length) cellsFound = true;
+
+  // console.log("Mines: " + mineArr.length + "\n" + "Marked Mines:" + markCount + "\n" + "All mines marked: " + isMarked);
+
+  // Check if all cells the are not mines have been revealed & isMarked is true.
+  if(isMarked && cellsFound) {
+
+    // Player has won.
+    lib.displayMessage('You win!');
+
+    // Reset board.
+    board.cells.length = 0;
+    console.log(board.cells);
+
+    // Add eventListener and show reset button.
+    document.getElementById("resetBtn").addEventListener('click', startGame);
+    document.getElementById("resetBtn").style.display = "block";
+
+  } else {
+
+    // Continue playing.
+    return;
+  }
 }
 
 
