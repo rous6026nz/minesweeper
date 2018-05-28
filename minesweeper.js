@@ -213,7 +213,7 @@ function countSurroundingMines (cell) {
 
       // Increase the counter.
       count ++;
-    }
+    } 
   }
 
   // Return to counter.
