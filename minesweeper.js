@@ -68,7 +68,7 @@ function startGame() {
   document.getElementById("resetBtn").style.display = "none";
 
   // Don't remove this function call: it makes the game work!
-  lib.initBoard()
+  lib.initBoard();
 
   document.addEventListener('click', checkForWin);
   document.addEventListener('contextmenu', checkForWin);
@@ -171,8 +171,7 @@ function checkBoardStatus(n) {
     board.cells.length = 0;
     console.log(board.cells);
 
-    // Add eventListener and show reset button.
-    document.getElementById("resetBtn").addEventListener('click', startGame);
+    // Show reset button.
     document.getElementById("resetBtn").style.display = "block";
 
   } else {
